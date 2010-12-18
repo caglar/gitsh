@@ -1,4 +1,4 @@
-#!/usr/bin/perl
+#!/usr/bin/perl -ws
 package gitsh;
 
 use strict;
@@ -13,29 +13,30 @@ my $SilentMode = 0;
 
 #A simple sub for concatenating the params in an array
 sub concat_params {
-    my $params = shift;
+    my $params     = shift;
     my $param_conc = "";
+
     #replaced ugly map with foreach:
-     foreach my $param (@$params) {
-       if ($param =~ m/\s/) {
+    foreach my $param (@$params) {
+        if ( $param =~ m/\s/ ) {
             $param = "\"$param\"";
-       }
-       $param_conc .= $param." ";
+        }
+        $param_conc .= $param . " ";
     }
     return $param_conc;
 }
 
 #Overriding the Term::Shell functions
 sub prompt_str {
-    "gitsh> "
+    "gitsh> ";
 }
 
 sub run_silent {
-   $SilentMode = !$SilentMode;
+    $SilentMode = !$SilentMode;
 }
 
 sub help_silent {
-<<END;
+    <<END;
  to run commands in shell in silent mode, also use it for toggle
 on/off the print mode
 END
@@ -47,32 +48,34 @@ sub run_bye {
 }
 
 sub help_bye {
-<<END;
+    <<END;
 to quit the shell
 END
 }
 
 sub catch_run {
-    my ($o, $cmd, @args) = @_;
-    my $params =  &concat_params(\@args);
-    if ($cmd eq "commit" and scalar @args eq 0) {
+    my ( $o, $cmd, @args ) = @_;
+    my $params = &concat_params( \@args );
+    if ( $cmd eq "commit" and scalar @args eq 0 ) {
         print "Please run commit with -m parameter. Commit is quitted!\n";
-    } else {
-       $cmd = PRE_VCS." ".$cmd." ".$params;
-       if ($SilentMode) {
-           `$cmd`;
-       } else {
-           print `$cmd`;
-       }
+    }
+    else {
+        $cmd = PRE_VCS . " " . $cmd . " " . $params;
+        if ($SilentMode) {
+            `$cmd`;
+        }
+        else {
+            print `$cmd`;
+        }
     }
 }
 
 sub catch_help {
-    my ($o, $cmd, @args) = @_;
-    my $params = join(" ", @args);
-    if (length $cmd eq 0) {
+    my ( $o, $cmd, @args ) = @_;
+    my $params = join( " ", @args );
+    if ( length $cmd eq 0 ) {
         print "Please enter a git command like:\n";
-        print<<STR;
+        print <<STR;
    bye        to quit the shell
    silent     to run commands in shell in silent mode, also use it for toggle
 on/off the print mode
@@ -98,10 +101,12 @@ on/off the print mode
    status     Show the working tree status
    tag        Create, list, delete or verify a tag object signed with GPG
 STR
-    } elsif ($cmd eq "git") {
-        $cmd = PRE_MAN." ".$cmd;
-    } else {
-       $cmd = PRE_MAN." ".PRE_VCS."-".$cmd." ".$params;
+    }
+    elsif ( $cmd eq "git" ) {
+        $cmd = PRE_MAN . " " . $cmd;
+    }
+    else {
+        $cmd = PRE_MAN . " " . PRE_VCS . "-" . $cmd . " " . $params;
     }
     `$cmd`;
 
@@ -113,7 +118,7 @@ use strict;
 use warnings;
 use diagnostics;
 
-use Getopt::Long;
+use Getopt::Std;
 use Data::Dumper;
 
 my $shell = gitsh->new;
@@ -141,60 +146,25 @@ sub exec {
 }
 
 sub init {
-    my $rtn = 1;
-    my $help;
-    my $execute;
-
-    GetOptions(
-        "help|h!" => \$help,
-        "exec|e=s" => \$execute
-    ) or die "Incorrect usage";
-
-    if ($help) {
+    my $rtn     = 1;
+    my $opt_str = 'he:';
+    my %opt;
+    getopts( "$opt_str", \%opt );
+    print Dumper( \%opt );
+    if ( $opt{h} ) {
         &usage();
         $rtn = 0;
     }
-    if ($execute) {
-        my @gitsh_cmds = &parse($execute);
-        &exec(\@gitsh_cmds);
+    if ( $opt{e} ) {
+        my @gitsh_cmds = &parse( $opt{e} );
+        &exec( \@gitsh_cmds );
         $rtn = 0;
     }
     return $rtn;
 }
 
-if (&init()) {
+if ( &init() ) {
     $shell->cmdloop;
 }
 
-__END__
-
-=head1 NAME
-
-sample - Using Getopt::Long and Pod::Usage
-
-=head1 SYNOPSIS
-
-gitsh [options] [command...]
-
-Options:
--help brief help message
--man full documentation
-
-=head1 OPTIONS
-
-=over 8
-
-=item B<-help>
-
-Print a brief help message and exits.
-
-=item B<-man>
-
-Prints the manual page and exits.
-
-=back
-
-=head1 DESCRIPTION
-
-B<This program> will read the given input file(s) and do something
-useful with the contents thereof.
+1;
