@@ -4,7 +4,11 @@ package gitsh;
 use strict;
 use warnings;
 
-use base qw(Term::Shell);
+eval{
+	require 'Term::Shell';
+};
+
+print "Term::Shell not installed - please install it with `cpan Term::Shell`\n" and exit if $@;
 
 use constant PRE_VCS => "git";
 use constant PRE_MAN => "man";
