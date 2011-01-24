@@ -170,7 +170,7 @@ __END__
 
 =head1 NAME
 
-sample - Using Getopt::Long and Pod::Usage
+gitsh - A simple git shell
 
 =head1 SYNOPSIS
 
@@ -198,3 +198,7 @@ Prints the manual page and exits.
 
 B<This program> will read the given input file(s) and do something
 useful with the contents thereof.
+
+=head1 AUTHOR
+
+Caglar Gulcehre
