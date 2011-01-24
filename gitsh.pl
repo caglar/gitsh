@@ -54,7 +54,7 @@ END
 
 sub catch_run {
     my ($o, $cmd, @args) = @_;
-    my $params =  &concat_params(\@args);
+    my $params =  concat_params(\@args);
     if ($cmd eq "commit" and scalar @args eq 0) {
         print "Please run commit with -m parameter. Commit is quitted!\n";
     } else {
@@ -133,7 +133,7 @@ sub parse {
     return @cmds;
 }
 
-sub exec {
+sub execute {
     my $cmds = shift;
     for my $cmd (@$cmds) {
         $shell->cmd($cmd);
@@ -155,14 +155,14 @@ sub init {
         $rtn = 0;
     }
     if ($execute) {
-        my @gitsh_cmds = &parse($execute);
-        &exec(\@gitsh_cmds);
+        my @gitsh_cmds = parse($execute);
+        execute(\@gitsh_cmds);
         $rtn = 0;
     }
     return $rtn;
 }
 
-if (&init()) {
+if (init()) {
     $shell->cmdloop;
 }
 
