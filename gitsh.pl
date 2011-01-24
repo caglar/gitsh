@@ -5,10 +5,12 @@ use strict;
 use warnings;
 
 eval{
-	require 'Term::Shell';
+	require Term::Shell;
 };
 
 print "Term::Shell not installed - please install it with `cpan Term::Shell`\n" and exit if $@;
+
+use base qw(Term::Shell);
 
 use constant PRE_VCS => "git";
 use constant PRE_MAN => "man";
