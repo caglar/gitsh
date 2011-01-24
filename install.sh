@@ -1,4 +1,5 @@
-#!/bin/bash -x
+#!/bin/sh
+
 perl -MCPAN -e "install Term::Shell"
 perl -MCPAN -e "install Getopt::Std"
 chmod +x ./gitsh.pl
