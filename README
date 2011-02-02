@@ -1,0 +1,19 @@
+gitsh is a simple git shell for interactive git commands. This is a product of my weekend 1 hour project.
+With the help of gitsh, you can run git commands without adding git before it. I know, it is not such a big
+innovation; but it is very useful if you write many git commands consecutively. You can also do
+more thung with less typing. That way is more intuitive and expressive for me. You can also run
+chained commands and run them consecutively from command line as well.
+It has two use cases:
+1)Using git shell:
+This is just like a typical interactive shell like mysql's or cpan's.
+Ex:
+gitsh> add .                                                                                                                                                                        
+gitsh> commit -m "added README"                                                                                                                                                     
+[parse_shell_params f9efd6e] added README                                                                                                                                           
+ 1 files changed, 11 insertions(+), 0 deletions(-)                                                                                                                                  
+ create mode 100644 README                                                                                                                                                          
+gitsh> exit 
+2)Running commands consecutively from command line:
+
+You can write several git commands with -e parameter and seperating each command with semicolon. Ex:
+gitsh -e add -A; commit -m "Lorem ipsulum"
