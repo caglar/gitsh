@@ -1,6 +1,6 @@
 #!/bin/sh
 
-curl -s -o "/usr/local/bin/gitsh" https://github.com/caglar/gitsh/raw/master/gitsh.pl
+curl -s -o "/usr/local/bin/gitsh" https://raw.github.com/caglar/gitsh/master/gitsh.pl
 
 if [ $? -ne 0 ] ; then
 	echo "Error occurred getting URL /usr/local/bin/gitsh:"
